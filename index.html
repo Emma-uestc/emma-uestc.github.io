@@ -1,18 +1,17 @@
----
-layout: about
----
-
 <div class="posts">
-  {% for post in site.posts %}
-    <article class="post">
+  <article class="post">
+    <h1><a href="/myblog/2023/06/08/first-post.html">First Post</a></h1>
+    <div class="entry">
+      This is the excerpt of the first post...
+    </div>
+    <a href="/myblog/2023/06/08/first-post.html" class="read-more">Read More</a>
+  </article>
 
-      <h1><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h1>
-
-      <div class="entry">
-        {{ post.excerpt }}
-      </div>
-
-      <a href="{{ site.baseurl }}{{ post.url }}" class="read-more">Read More</a>
-    </article>
-  {% endfor %}
+  <article class="post">
+    <h1><a href="/myblog/2023/06/09/second-post.html">Second Post</a></h1>
+    <div class="entry">
+      This is the excerpt of the second post...
+    </div>
+    <a href="/myblog/2023/06/09/second-post.html" class="read-more">Read More</a>
+  </article>
 </div>
