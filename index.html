@@ -1,12 +1,70 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Holly's Site</title>
-</head>
-<body>
-    <h1>Holly's Site</h1>
-    <p>第一个标签测试页</p>
-</body>
-</html>
+---
+layout: default
+title: 首页
+---
+
+<div class="home">
+    <!-- 欢迎区域 -->
+    <section class="welcome-section">
+        <div class="welcome-content">
+            <h1>欢迎来到我的数字花园 🌱</h1>
+            <p class="welcome-text">
+                这里记录着我的技术学习、职业成长和生活感悟。
+                <br>
+                希望我的分享能对你有所帮助，也期待与你的交流！
+            </p>
+        </div>
+    </section>
+
+    <!-- 最新文章 -->
+    <section class="recent-posts">
+        <h2 class="section-title">最新文章</h2>
+        <div class="posts-grid">
+            {% for post in site.posts limit: 6 %}
+            <article class="post-card">
+                <div class="post-category">
+                    {% if post.categories %}
+                        {{ site.categories[post.categories.first].icon }} {{ site.categories[post.categories.first].name }}
+                    {% endif %}
+                </div>
+                <h3 class="post-title">
+                    <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+                </h3>
+                <p class="post-excerpt">{{ post.excerpt | strip_html | truncatewords: 25 }}</p>
+                <div class="post-meta">
+                    <time>{{ post.date | date: "%Y年%m月%d日" }}</time>
+                    {% if post.tags %}
+                        <div class="post-tags">
+                            {% for tag in post.tags limit: 3 %}
+                                <span class="tag">{{ tag }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- 分类导航 -->
+    <section class="categories-section">
+        <h2 class="section-title">内容分类</h2>
+        <div class="categories-grid">
+            {% for category in site.categories %}
+            <div class="category-card">
+                <div class="category-icon">{{ category[1].icon }}</div>
+                <h3>{{ category[1].name }}</h3>
+                <p>{{ category[1].description }}</p>
+                <a href="/categories/{{ category[0] }}/" class="category-link">查看文章 →</a>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    {% if site.posts.size == 0 %}
+    <div class="empty-state">
+        <h2>🚀 博客即将启程！</h2>
+        <p>正在准备第一篇文章，敬请期待...</p>
+    </div>
+    {% endif %}
+</div>

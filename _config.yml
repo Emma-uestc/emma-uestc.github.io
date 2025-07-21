@@ -1,0 +1,125 @@
+title: "Emma's Digital Garden"
+tagline: "技术 · 生活 · 成长"
+description: >-
+  记录技术学习、职业成长、生活感悟的个人空间。
+  分享编程经验、运维实践、学习心得，以及生活中的点点滴滴。
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+permalink: pretty
+paginate: 8
+paginate_path: "/page:num/"
+excerpt_separator: "<!--more-->"
+
+# Site configuration
+baseurl: ""
+url: "https://emma-uestc.github.io"
+timezone: Asia/Shanghai
+lang: zh-CN
+
+# Personal info
+author:
+  name: Emma
+  bio: "SRE工程师 | 技术爱好者 | 终身学习者"
+  location: "成都, 中国"
+  email: your.email@example.com
+  github: Emma-uestc
+  avatar: "/assets/img/avatar.jpg"
+
+# Social links
+social:
+  github: Emma-uestc
+  email: your.email@example.com
+  # linkedin: your-linkedin-profile
+  # twitter: your-twitter-handle
+
+# 博客分类配置
+categories:
+  tech:
+    name: "技术笔记"
+    description: "编程语言、框架、工具学习记录"
+    icon: "💻"
+  career:
+    name: "职场成长"
+    description: "工作经验、职业发展、技能提升"
+    icon: "🚀"
+  life:
+    name: "生活随笔"
+    description: "日常感悟、旅行记录、兴趣爱好"
+    icon: "🌸"
+  learning:
+    name: "学习笔记"
+    description: "读书心得、课程总结、知识整理"
+    icon: "📚"
+
+# 主题配置
+theme_settings:
+  primary_color: "#2563eb"
+  secondary_color: "#64748b"
+  accent_color: "#f59e0b"
+  dark_mode: true
+
+# Plugins
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+  - jekyll-paginate
+
+# Collections
+collections:
+  posts:
+    output: true
+    permalink: /:categories/:year/:month/:day/:title/
+  projects:
+    output: true
+    permalink: /projects/:name/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      author: "Emma"
+      show_sidebar: true
+  - scope:
+      path: ""
+      type: "projects"
+    values:
+      layout: "project"
+
+# 站点功能
+features:
+  comments: true
+  search: true
+  analytics: true
+  rss: true
+  related_posts: true
+  reading_time: true
+
+# 导航菜单
+navigation:
+  - title: "首页"
+    url: "/"
+  - title: "技术"
+    url: "/categories/tech/"
+  - title: "职场"
+    url: "/categories/career/"
+  - title: "生活"
+    url: "/categories/life/"
+  - title: "学习"
+    url: "/categories/learning/"
+  - title: "项目"
+    url: "/projects/"
+  - title: "关于"
+    url: "/about/"
+
+# SEO设置
+seo:
+  author: "Emma"
+  twitter:
+    username: ""
+    card: "summary"
