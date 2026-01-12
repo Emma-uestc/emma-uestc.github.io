@@ -134,7 +134,7 @@ Hit CTRL-C to stop the server
 [2026-01-07T03:01:20.787Z]  "GET /favicon.ico" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"
 [2026-01-07T03:01:20.789Z]  "GET /favicon.ico" Error (404): "Not found"
 ```   
-![](images/hello-html.png)
+![](/assets/images/cs50/hello-html.png)
 标签的层级结构可表示如下：
 [](https://cs50.harvard.edu/x/notes/8/cs50Week8Slide065.png)  
 了解这种层级结构对后续学习JavaScript会很有帮助。

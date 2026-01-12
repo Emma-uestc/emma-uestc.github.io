@@ -28,7 +28,7 @@ tags: [C, 算法, 搜索, 排序]
 
 回顾之前介绍算法时展示的图表：
 
-![算法效率对比](images/cs50Week3Slide010.png)
+![算法效率对比](/assets/images/cs50/cs50Week3Slide010.png)
 
 **关键问题**：算法处理问题的方式如何决定解决问题所需的时间？
 
@@ -47,7 +47,7 @@ tags: [C, 算法, 搜索, 排序]
 
 可以将数组想象成一排储物柜：
 
-![储物柜数组示意图](images/cs50Week3Slide018.png)
+![储物柜数组示意图](/assets/images/cs50/cs50Week3Slide018.png)
 
 **数组索引**：
 - 最左端是索引 `0`（数组的起始位置）
@@ -165,7 +165,7 @@ Else if 50 > doors[middle]
 
 我们需要一种方法来比较不同算法的效率，这就是**大O表示法**（Big O Notation）。
 
-![算法运行时间对比](images/cs50Week3Slide042.png)  
+![算法运行时间对比](/assets/images/cs50/cs50Week3Slide042.png)  
 
 ## 大O表示法（Big O）
 
@@ -557,7 +557,7 @@ int main(void)
 
 ### 可视化示意
 
-![数组表示](images/cs50Week3Slide104.png)  
+![数组表示](/assets/images/cs50/cs50Week3Slide104.png)  
 
 ### 伪代码
 

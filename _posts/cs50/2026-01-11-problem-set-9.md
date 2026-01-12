@@ -246,7 +246,7 @@ def index():
 
 运行 `flask run`，浏览器打开页面：
 
-![Birthdays 初始页面](images/birthdays-display.png)
+![Birthdays 初始页面](/assets/images/cs50/birthdays-display.png)
 
 查询数据库确认有三条数据：
 
@@ -256,7 +256,7 @@ SELECT * FROM birthdays;
 
 ### 2. 添加新生日
 
-![添加生日](images/birthdays-add.png)
+![添加生日](/assets/images/cs50/birthdays-add.png)
 
 验证数据库：
 
@@ -273,7 +273,7 @@ SELECT * FROM birthdays WHERE name = 'John';
 
 输入非法数据时，显示错误提示：
 
-![错误提示](images/birthdays-add-error.png)
+![错误提示](/assets/images/cs50/birthdays-add-error.png)
 
 ---
 
@@ -487,7 +487,7 @@ def register():
 
 ### 测试注册功能
 
-![注册功能测试](images/register-test.png)
+![注册功能测试](/assets/images/cs50/register-test.png)
 
 验证数据库：
 
@@ -495,7 +495,7 @@ def register():
 SELECT id, username, cash FROM users;
 ```
 
-![查询用户](images/sql-query-after-register.png)
+![查询用户](/assets/images/cs50/sql-query-after-register.png)
 
 ---
 
@@ -570,7 +570,7 @@ def quote():
 
 ### 测试查价功能
 
-![Quote 功能测试](images/quote-test.png)
+![Quote 功能测试](/assets/images/cs50/quote-test.png)
 
 ---
 
@@ -690,11 +690,11 @@ def buy():
 
 **余额不足时**：
 
-![余额不足](images/cash-not-enough.png)
+![余额不足](/assets/images/cs50/cash-not-enough.png)
 
 **购买成功**：
 
-![购买成功](images/buy.png)
+![购买成功](/assets/images/cs50/buy.png)
 
 ---
 
@@ -804,7 +804,7 @@ def index():
 
 ### 效果展示
 
-![投资组合](images/portfolio.png)
+![投资组合](/assets/images/cs50/portfolio.png)
 
 ---
 
