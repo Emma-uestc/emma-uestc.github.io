@@ -20,11 +20,14 @@ title: 首页
     <section class="recent-posts">
         <h2 class="section-title">最新文章</h2>
         <div class="posts-grid">
-            {% for post in site.posts limit: 6 %}
+            {% for post in site.posts %}
             <article class="post-card">
                 <div class="post-category">
-                    {% if post.categories %}
-                        {{ site.categories[post.categories.first].icon }} {{ site.categories[post.categories.first].name }}
+                    {% if post.categories.first == "learning" %}📚 学习笔记
+                    {% elsif post.categories.first == "life" %}🌸 生活随笔
+                    {% elsif post.categories.first == "work" %}💼 工作笔记
+                    {% elsif post.categories.first == "Kubernetes" %}☸️ Kubernetes
+                    {% else %}📝 文章
                     {% endif %}
                 </div>
                 <h3 class="post-title">
@@ -50,14 +53,27 @@ title: 首页
     <section class="categories-section">
         <h2 class="section-title">内容分类</h2>
         <div class="categories-grid">
-            {% for category in site.categories %}
             <div class="category-card">
-                <div class="category-icon">{{ category[1].icon }}</div>
-                <h3>{{ category[1].name }}</h3>
-                <p>{{ category[1].description }}</p>
-                <a href="/categories/{{ category[0] }}/" class="category-link">查看文章 →</a>
+                <div class="category-icon">📚</div>
+                <h3>学习笔记</h3>
+                <p>课程学习、知识整理、技能提升</p>
+                <p class="category-count">{{ site.categories.learning | size }} 篇文章</p>
+                <a href="/categories/learning/" class="category-link">查看文章 →</a>
             </div>
-            {% endfor %}
+            <div class="category-card">
+                <div class="category-icon">🌸</div>
+                <h3>生活随笔</h3>
+                <p>日常感悟、旅行记录、兴趣爱好</p>
+                <p class="category-count">{{ site.categories.life | size }} 篇文章</p>
+                <a href="/categories/life/" class="category-link">查看文章 →</a>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">💼</div>
+                <h3>工作笔记</h3>
+                <p>工作经验、技术实践、项目总结</p>
+                <p class="category-count">{{ site.categories.work | size }} 篇文章</p>
+                <a href="/categories/work/" class="category-link">查看文章 →</a>
+            </div>
         </div>
     </section>
 
@@ -68,3 +84,11 @@ title: 首页
     </div>
     {% endif %}
 </div>
+
+<style>
+.category-count {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0.5rem 0;
+}
+</style>
