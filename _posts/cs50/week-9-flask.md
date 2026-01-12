@@ -1,0 +1,1355 @@
+---
+layout: post
+title: "CS50 Week 9: Flask - 构建你的第一个 Web 应用"
+date: 2026-01-12
+categories: [CS50, Programming]
+tags: [Python, Flask, Web开发, SQL, Session]
+---
+
+# Week 9 概述
+
+**本周主题**：使用 Flask 框架构建动态 Web 应用程序
+
+在过去的几周里，我们学习了多种编程语言、技术和策略。事实上，这门课与其说是 C 语言课或 Python 课，不如说是一门**编程思维课**，让你能够继续追随未来的编程趋势。
+
+今天我们将整合之前学过的所有技术：**HTML、CSS、SQL、Python 和 JavaScript**，创建属于自己的 Web 应用程序！
+
+> 💡 **提示**：本周所学技能非常适合用来完成 CS50 的**最终项目**（Final Project）！
+
+---
+
+## 🌐 Web 开发基础知识（给初学者）
+
+在深入 Flask 之前，让我们先理解一些 Web 开发的核心概念：
+
+### 什么是 Web 服务器？
+
+```
+┌─────────────┐         请求（Request）        ┌─────────────┐
+│   浏览器     │  ─────────────────────────────>  │   服务器     │
+│  (Client)   │  <─────────────────────────────  │  (Server)   │
+└─────────────┘         响应（Response）        └─────────────┘
+```
+
+- **客户端（Client）**：你的浏览器（Chrome、Safari、Firefox 等）
+- **服务器（Server）**：远程计算机，存储网站文件并处理请求
+- **请求（Request）**：浏览器向服务器发送的"我要看这个页面"的消息
+- **响应（Response）**：服务器返回的 HTML、CSS、图片等内容
+
+### 静态页面 vs 动态页面
+
+| 类型 | 说明 | 例子 |
+|------|------|------|
+| **静态页面** | HTML 文件固定不变，所有用户看到的内容相同 | 个人简历页面 |
+| **动态页面** | 服务器根据用户请求实时生成 HTML | 淘宝商品页面、微博时间线 |
+
+**本周重点**：学习如何用 Python + Flask 创建**动态页面**！
+
+### URL 结构解析
+
+```
+https://www.example.com/route?key=value&key2=value2
+│       │               │     │
+│       │               │     └── 查询参数（Query Parameters）
+│       │               └── 路由（Route）
+│       └── 域名（Domain）
+└── 协议（Protocol）
+```
+
+- **路由（Route）**：服务器上的一个"地址"，对应一个功能
+- **查询参数**：通过 `?key=value` 的形式传递数据给服务器
+
+---
+
+# http-server 回顾
+
+迄今为止，我们见到的所有 HTML 都是预先编写且**静态**的。
+
+过去，当你访问网页时，浏览器会下载 HTML 页面供你查看。这类页面被称为**静态页面**，因为 HTML 中的内容完全等同于用户所见，由客户端（浏览器）直接渲染。
+
+**动态页面**则是由 Python 等语言**即时生成** HTML 的能力。你可以创建基于用户输入或行为，由服务器端代码动态生成的网页。
+
+之前我们使用 `http-server` 来提供网页服务。今天我们将采用新型服务器——**Flask**，它能解析网址并根据 URL 执行相应操作。
+
+上周你看到过如下 URL 格式：
+
+```
+https://www.example.com/folder/file.html
+```
+
+请注意，`file.html` 是位于 `example.com` 域名下名为 `folder` 的文件夹中的 HTML 文件。
+
+---
+
+# Flask 入门
+
+## 什么是 Flask？
+
+[Flask](https://flask.palletsprojects.com/) 是一个用 Python 编写的 **Web 框架**（或称**微框架**）。
+
+> **框架（Framework）**：一套预先写好的代码库，帮助开发者更快速地构建应用程序。你不需要从零开始写所有代码。
+
+### Flask 的核心优势
+
+- ✅ **简单易学**：几行代码就能创建一个 Web 应用
+- ✅ **灵活**：你可以按需添加功能
+- ✅ **Python 生态**：可以使用所有 Python 库
+
+## 创建第一个 Flask 应用
+
+### 文件结构
+
+在开始之前，我们需要了解 Flask 项目的基本结构：
+
+```bash
+my_flask_app/
+├── app.py              # 主程序文件（Flask 应用代码）
+├── requirements.txt    # 依赖库列表
+├── static/             # 静态文件（CSS、JS、图片）
+└── templates/          # HTML 模板文件
+    └── index.html
+```
+
+### Step 1: 创建 requirements.txt
+
+这个文件列出了 Flask 应用运行所需的库：
+
+```text
+Flask
+```
+
+### Step 2: 创建 app.py
+
+```python
+# 最简单的 Flask 应用：返回文本
+
+from flask import Flask
+
+# 创建 Flask 应用实例
+# __name__ 告诉 Flask 当前模块的名称
+app = Flask(__name__)
+
+
+# 定义路由：当用户访问 "/" 时，执行这个函数
+@app.route("/")
+def index():
+    return "hello, world"
+```
+
+### 代码详解
+
+让我们逐行理解这段代码：
+
+| 代码 | 说明 |
+|------|------|
+| `from flask import Flask` | 从 flask 库导入 Flask 类 |
+| `app = Flask(__name__)` | 创建一个 Flask 应用实例 |
+| `@app.route("/")` | **装饰器**：定义 URL 路由 "/" |
+| `def index():` | 当用户访问 "/" 时，执行这个函数 |
+| `return "hello, world"` | 返回给浏览器的内容 |
+
+> 🔑 **什么是装饰器（Decorator）？**
+> 
+> `@app.route("/")` 是 Python 的**装饰器**语法。它的作用是给函数"附加"功能。
+> 
+> 在这里，它告诉 Flask：**当用户访问 `/` 这个 URL 时，请执行下面的函数。**
+> 
+> 你可以把装饰器理解为一个"标签"，标记这个函数对应哪个 URL。
+
+### Step 3: 运行应用
+
+在终端窗口中输入：
+
+```bash
+flask run
+```
+
+然后访问终端显示的 URL（通常是 `http://127.0.0.1:5000/`），你就能看到 "hello, world"！
+
+**控制台日志示例**：
+
+```log
+ * Restarting with stat
+127.0.0.1 - - [07/Jan/2026 14:16:53] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [07/Jan/2026 14:17:08] "GET /?name=holly HTTP/1.1" 200 -
+```
+
+**日志解读**：
+- `127.0.0.1`：访问者的 IP 地址（本地主机）
+- `GET /`：HTTP 请求方法和路径
+- `HTTP/1.1`：HTTP 协议版本
+- `200`：HTTP 状态码（200 表示成功）
+
+## 返回 HTML 内容
+
+Flask 也可以返回 HTML 代码：
+
+```python
+# 返回 HTML 字符串
+
+from flask import Flask
+
+app = Flask(__name__)
+
+
+@app.route("/")
+def index():
+    return '<!DOCTYPE html><html lang="en"><head><title>hello</title></head><body>hello, world</body></html>'
+```
+
+但是，把 HTML 写在 Python 代码里很不优雅！代码难以阅读和维护。
+
+**更好的方案**：使用**模板**（Templates）。
+
+## 使用模板（Templates）
+
+Flask 支持使用 **Jinja2 模板引擎**，让 HTML 和 Python 代码分离。
+
+### 创建 templates/index.html
+
+```html
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+        <title>hello</title>
+    </head>
+
+    <body>
+        hello, {{ name }}
+    </body>
+
+</html>
+```
+
+> 🔑 **Jinja2 模板语法**
+> 
+> - `{{ variable }}`：输出变量的值
+> - `{% ... %}`：执行语句（如 if、for）
+> - `{# ... #}`：注释
+
+### 修改 app.py
+
+```python
+# 使用模板和 URL 参数
+
+from flask import Flask, render_template, request
+
+app = Flask(__name__)
+
+
+@app.route("/")
+def index():
+    # 从 URL 参数获取 name，默认值为 "world"
+    name = request.args.get("name", "world")
+    # 渲染模板，并传递变量
+    return render_template("index.html", name=name)
+```
+
+### 代码详解
+
+| 代码 | 说明 |
+|------|------|
+| `from flask import render_template, request` | 导入模板渲染函数和请求对象 |
+| `request.args.get("name", "world")` | 获取 URL 中的 `name` 参数，如果没有则默认为 "world" |
+| `render_template("index.html", name=name)` | 渲染模板，并把 `name` 变量传递给模板 |
+
+### 测试
+
+确保文件结构如下：
+
+```bash
+.
+├── app.py
+├── requirements.txt
+└── templates
+    └── index.html
+```
+
+运行 `flask run`，然后尝试访问：
+- `http://127.0.0.1:5000/` → 显示 "hello, world"
+- `http://127.0.0.1:5000/?name=David` → 显示 "hello, David"
+
+---
+
+# 表单（Forms）
+
+我们知道大多数用户不会在地址栏中输入参数。程序员依赖于用户在网页上填写**表单**。
+
+## 创建表单页面
+
+修改 `templates/index.html`：
+
+```html
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+        <title>hello</title>
+    </head>
+
+    <body>
+        <form action="/greet" method="get">
+            <input autocomplete="off" autofocus name="name" placeholder="Name" type="text">
+            <button type="submit">Greet</button>
+        </form>
+    </body>
+
+</html>
+```
+
+### HTML 表单详解
+
+| 属性/元素 | 说明 |
+|----------|------|
+| `<form>` | 表单容器 |
+| `action="/greet"` | 表单提交到的 URL |
+| `method="get"` | HTTP 方法（GET 或 POST） |
+| `<input>` | 输入框 |
+| `name="name"` | 输入框的名称，服务器通过这个名称获取值 |
+| `placeholder="Name"` | 输入框的提示文字 |
+| `autocomplete="off"` | 禁用自动补全 |
+| `autofocus` | 页面加载后自动聚焦到这个输入框 |
+| `<button type="submit">` | 提交按钮 |
+
+## 添加问候路由
+
+修改 `app.py`：
+
+```python
+# 添加表单和第二个路由
+
+from flask import Flask, render_template, request
+
+app = Flask(__name__)
+
+
+@app.route("/")
+def index():
+    return render_template("index.html")
+
+
+@app.route("/greet")
+def greet():
+    return render_template("greet.html", name=request.args.get("name", "world"))
+```
+
+创建 `templates/greet.html`：
+
+```html
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+        <meta name="viewport" content="initial-scale=1, width=device-width">
+        <title>hello</title>
+    </head>
+
+    <body>
+        hello, {{ name }}
+    </body>
+
+</html>
+```
+
+---
+
+# 模板继承（Template Inheritance）
+
+`index.html` 和 `greet.html` 包含大量相同的代码。我们可以使用**模板继承**来减少重复。
+
+## 创建基础模板 layout.html
+
+```html
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+        <title>hello</title>
+    </head>
+
+    <body>
+        {% block body %}{% endblock %}
+    </body>
+
+</html>
+```
+
+> 🔑 **模板继承语法**
+> 
+> - `{% block name %}{% endblock %}`：定义一个可被子模板覆盖的"块"
+> - 子模板使用 `{% extends "layout.html" %}` 继承父模板
+> - 子模板使用 `{% block name %}...{% endblock %}` 填充内容
+
+## 修改 index.html
+
+```html
+{% extends "layout.html" %}
+
+{% block body %}
+
+    <form action="/greet" method="get">
+        <input autocomplete="off" autofocus name="name" placeholder="Name" type="text">
+        <button type="submit">Greet</button>
+    </form>
+
+{% endblock %}
+```
+
+## 修改 greet.html
+
+```html
+{% extends "layout.html" %}
+
+{% block body %}
+    hello, {{ name }}
+{% endblock %}
+```
+
+这样，公共的 HTML 结构只需要写一次！
+
+---
+
+# 请求方法（Request Methods）
+
+## GET vs POST
+
+| 方法 | 特点 | 适用场景 |
+|------|------|---------|
+| **GET** | 数据在 URL 中可见 | 搜索、获取数据 |
+| **POST** | 数据在请求体中，URL 不可见 | 登录、提交表单 |
+
+**安全问题**：使用 GET 方法时，用户名和密码会出现在 URL 中！
+
+```
+http://example.com/login?username=david&password=12345
+```
+
+这是非常不安全的！
+
+## 使用 POST 方法
+
+修改 `app.py`：
+
+```python
+# 使用 POST 方法
+
+from flask import Flask, render_template, request
+
+app = Flask(__name__)
+
+
+@app.route("/")
+def index():
+    return render_template("index.html")
+
+
+@app.route("/greet", methods=["POST"])
+def greet():
+    # 注意：POST 方法使用 request.form 而不是 request.args
+    return render_template("greet.html", name=request.form.get("name", "world"))
+```
+
+修改 `index.html` 的表单：
+
+```html
+{% extends "layout.html" %}
+
+{% block body %}
+
+    <form action="/greet" method="post">
+        <input autocomplete="off" autofocus name="name" placeholder="Name" type="text">
+        <button type="submit">Greet</button>
+    </form>
+
+{% endblock %}
+```
+
+### GET vs POST 代码对比
+
+| | GET | POST |
+|--|-----|------|
+| HTML 表单 | `method="get"` | `method="post"` |
+| Python 获取数据 | `request.args.get()` | `request.form.get()` |
+| 数据位置 | URL 参数 | 请求体 |
+
+## 单一路由处理多种方法
+
+可以让一个路由同时处理 GET 和 POST 请求：
+
+```python
+# 单一路由处理 GET 和 POST
+
+from flask import Flask, render_template, request
+
+app = Flask(__name__)
+
+
+@app.route("/", methods=["GET", "POST"])
+def index():
+    if request.method == "POST":
+        return render_template("greet.html", name=request.form.get("name", "world"))
+    return render_template("index.html")
+```
+
+## 处理空输入
+
+如果用户不输入名字，会显示 "hello," 而没有名字。我们可以在模板中处理这个情况：
+
+```html
+{% extends "layout.html" %}
+
+{% block body %}
+
+    hello,
+    {% if name -%}
+        {{ name }}
+    {%- else -%}
+        world
+    {%- endif %}
+
+{% endblock %}
+```
+
+---
+
+# Frosh IMs 项目：完整的注册系统
+
+现在让我们创建一个更完整的 Web 应用：**学生体育活动注册系统**。
+
+## 项目结构
+
+```bash
+froshims/
+├── app.py
+├── requirements.txt
+├── static/
+│   └── cat.jpg
+└── templates/
+    ├── index.html
+    ├── layout.html
+    ├── success.html
+    ├── failure.html
+    ├── error.html
+    └── registrants.html
+```
+
+## 创建项目
+
+```bash
+mkdir froshims
+cd froshims
+mkdir templates static
+```
+
+## 基础版本
+
+### requirements.txt
+
+```text
+Flask
+```
+
+### app.py
+
+```python
+# 实现注册表单，使用下拉菜单，服务器端验证
+
+from flask import Flask, render_template, request
+
+app = Flask(__name__)
+
+# 可选的运动项目列表
+SPORTS = [
+    "Basketball",
+    "Soccer",
+    "Ultimate Frisbee"
+]
+
+
+@app.route("/")
+def index():
+    # 将运动列表传递给模板
+    return render_template("index.html", sports=SPORTS)
+
+
+@app.route("/register", methods=["POST"])
+def register():
+    # 验证提交的数据
+    if not request.form.get("name") or request.form.get("sport") not in SPORTS:
+        return render_template("failure.html")
+
+    # 注册成功
+    return render_template("success.html")
+```
+
+### templates/layout.html
+
+```html
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+        <meta name="viewport" content="initial-scale=1, width=device-width">
+        <title>froshims</title>
+    </head>
+
+    <body>
+        {% block body %}{% endblock %}
+    </body>
+
+</html>
+```
+
+### templates/index.html
+
+```html
+{% extends "layout.html" %}
+
+{% block body %}
+    <h1>Register</h1>
+    <form action="/register" method="post">
+        <input autocomplete="off" autofocus name="name" placeholder="Name" type="text">
+        <select name="sport">
+            <option selected value="">Sport</option>
+            {% for sport in sports %}
+                <option value="{{ sport }}">{{ sport }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Register</button>
+    </form>
+{% endblock %}
+```
+
+### templates/success.html
+
+```html
+{% extends "layout.html" %}
+
+{% block body %}
+    You are registered!
+{% endblock %}
+```
+
+### templates/failure.html
+
+```html
+{% extends "layout.html" %}
+
+{% block body %}
+    You are not registered!
+{% endblock %}
+```
+
+运行 `flask run`，你就能看到注册页面了！
+
+![注册页面](images/froshims-register.png)
+
+## 改进版本：存储注册者
+
+上面的版本有个问题：注册信息没有保存！让我们改进它。
+
+### 改进 app.py
+
+```python
+# 使用字典存储注册者
+
+from flask import Flask, redirect, render_template, request
+
+app = Flask(__name__)
+
+# 存储注册者的字典
+REGISTRANTS = {}
+
+SPORTS = [
+    "Basketball",
+    "Soccer",
+    "Ultimate Frisbee"
+]
+
+
+@app.route("/")
+def index():
+    return render_template("index.html", sports=SPORTS)
+
+
+@app.route("/register", methods=["POST"])
+def register():
+    # 验证姓名
+    name = request.form.get("name")
+    if not name:
+        return render_template("error.html", message="Missing name")
+
+    # 验证运动项目
+    sport = request.form.get("sport")
+    if not sport:
+        return render_template("error.html", message="Missing sport")
+    if sport not in SPORTS:
+        return render_template("error.html", message="Invalid sport")
+
+    # 保存注册信息
+    REGISTRANTS[name] = sport
+
+    # 重定向到注册者列表页面
+    return redirect("/registrants")
+
+
+@app.route("/registrants")
+def registrants():
+    return render_template("registrants.html", registrants=REGISTRANTS)
+```
+
+### templates/error.html
+
+```html
+{% extends "layout.html" %}
+
+{% block body %}
+    <h1>Error</h1>
+    <p>{{ message }}</p>
+    <img alt="Grumpy Cat" src="/static/cat.jpg">
+{% endblock %}
+```
+
+### templates/registrants.html
+
+```html
+{% extends "layout.html" %}
+
+{% block body %}
+    <h1>Registrants</h1>
+    <ul>
+        {% for name in registrants %}
+            <li>{{ name }} registered for {{ registrants[name] }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+```
+
+![多用户注册](images/froshims-multi-register.png)
+
+**问题**：数据存储在内存中，服务器重启后数据就丢失了！
+
+---
+
+# Flask 与 SQL 数据库
+
+为了让数据**持久化**（服务器重启后仍然存在），我们需要使用数据库！
+
+## 配置数据库
+
+### 下载数据库文件
+
+从课程页面下载 [froshims.db](https://cdn.cs50.net/2025/fall/lectures/9/src9/froshims7/froshims.db)。
+
+### 查看数据库结构
+
+```bash
+sqlite3 froshims.db
+```
+
+```sql
+sqlite> .schema
+CREATE TABLE registrants (id INTEGER, name TEXT NOT NULL, sport TEXT NOT NULL, PRIMARY KEY(id));
+
+sqlite> SELECT * FROM registrants;
+```
+
+### 更新 requirements.txt
+
+```text
+cs50
+Flask
+```
+
+### 更新 app.py
+
+```python
+# 使用 SQLite 数据库存储注册者
+
+from cs50 import SQL
+from flask import Flask, redirect, render_template, request
+
+app = Flask(__name__)
+
+# 连接数据库
+db = SQL("sqlite:///froshims.db")
+
+SPORTS = [
+    "Basketball",
+    "Soccer",
+    "Ultimate Frisbee"
+]
+
+
+@app.route("/")
+def index():
+    return render_template("index.html", sports=SPORTS)
+
+
+@app.route("/deregister", methods=["POST"])
+def deregister():
+    # 获取要注销的用户 ID
+    id = request.form.get("id")
+    if id:
+        # 从数据库删除
+        db.execute("DELETE FROM registrants WHERE id = ?", id)
+    return redirect("/registrants")
+
+
+@app.route("/register", methods=["POST"])
+def register():
+    # 验证姓名
+    name = request.form.get("name")
+    if not name:
+        return render_template("error.html", message="Missing name")
+
+    # 验证运动项目（支持多选）
+    sports = request.form.getlist("sport")
+    if not sports:
+        return render_template("error.html", message="Missing sport")
+    for sport in sports:
+        if sport not in SPORTS:
+            return render_template("error.html", message="Invalid sport")
+
+    # 将数据插入数据库
+    for sport in sports:
+        db.execute("INSERT INTO registrants (name, sport) VALUES(?, ?)", name, sport)
+
+    # 重定向到注册者列表
+    return redirect("/registrants")
+
+
+@app.route("/registrants")
+def registrants():
+    # 从数据库查询所有注册者
+    registrants = db.execute("SELECT * FROM registrants")
+    return render_template("registrants.html", registrants=registrants)
+```
+
+### 更新 templates/registrants.html
+
+```html
+{% extends "layout.html" %}
+
+{% block body %}
+    <h1>Registrants</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Sport</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for registrant in registrants %}
+                <tr>
+                    <td>{{ registrant.name }}</td>
+                    <td>{{ registrant.sport }}</td>
+                    <td>
+                        <form action="/deregister" method="post">
+                            <input name="id" type="hidden" value="{{ registrant.id }}">
+                            <button type="submit">Deregister</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+```
+
+### 测试数据库
+
+运行应用并注册几个用户，然后查询数据库：
+
+```sql
+sqlite3 froshims.db
+
+sqlite> SELECT * FROM registrants;
++----+-------+------------+
+| id | name  |   sport    |
++----+-------+------------+
+| 1  | John  | Basketball |
+| 2  | Holly | Soccer     |
++----+-------+------------+
+```
+
+![使用 SQL 数据库](images/froshims-sql.png)
+
+现在数据会持久化保存了！🎉
+
+更多关于 Flask 的用法，请查看 [Flask 官方文档](https://flask.palletsprojects.com/)。
+
+---
+
+# Cookies 和 Session（会话管理）
+
+## MVC 架构
+
+在继续之前，让我们理解一个重要的软件架构模式——**MVC**：
+
+```
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│    Model    │ <── │  Controller │ ──> │    View     │
+│   (模型)    │     │   (控制器)   │     │   (视图)    │
+│  数据库/SQL  │     │   app.py    │     │   HTML模板   │
+└─────────────┘     └─────────────┘     └─────────────┘
+```
+
+- **Model（模型）**：数据的存储和处理（数据库）
+- **View（视图）**：用户看到的界面（HTML 模板）
+- **Controller（控制器）**：处理业务逻辑（app.py）
+
+## 安全问题
+
+之前的 froshims 应用存在安全隐患：
+- 任何人都可以点击 "Deregister" 按钮删除其他人的注册信息！
+- 没有用户认证，无法区分不同的用户
+
+## 什么是 Cookie 和 Session？
+
+### Cookie
+
+**Cookie** 是存储在浏览器中的小型数据片段，用于在客户端和服务器之间传递信息。
+
+```
+HTTP 请求头中的 Cookie：
+GET / HTTP/2
+Host: accounts.google.com
+Cookie: session=abc123xyz
+```
+
+### Session
+
+**Session（会话）** 是基于 Cookie 的用户认证机制：
+
+```
+┌─────────────┐                    ┌─────────────┐
+│   浏览器     │   Cookie: sid=123  │   服务器     │
+│            │  ───────────────>  │            │
+│            │                    │  session:  │
+│            │                    │  123 -> 用户A │
+└─────────────┘                    └─────────────┘
+```
+
+服务器通过 Cookie 中的 Session ID 识别用户身份。
+
+## 实现登录功能
+
+### 项目结构
+
+```bash
+login/
+├── app.py
+├── requirements.txt
+└── templates/
+    ├── index.html
+    ├── layout.html
+    └── login.html
+```
+
+### requirements.txt
+
+```text
+Flask
+Flask-Session
+```
+
+### templates/layout.html
+
+```html
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+        <meta name="viewport" content="initial-scale=1, width=device-width">
+        <title>login</title>
+    </head>
+
+    <body>
+        {% block body %}{% endblock %}
+    </body>
+
+</html>
+```
+
+### templates/index.html
+
+```html
+{% extends "layout.html" %}
+
+{% block body %}
+
+    {% if name -%}
+        You are logged in as {{ name }}. <a href="/logout">Log out</a>.
+    {%- else -%}
+        You are not logged in. <a href="/login">Log in</a>.
+    {%- endif %}
+
+{% endblock %}
+```
+
+### templates/login.html
+
+```html
+{% extends "layout.html" %}
+
+{% block body %}
+
+    <form action="/login" method="post">
+        <input autocomplete="off" autofocus name="name" placeholder="Name" type="text">
+        <button type="submit">Log In</button>
+    </form>
+
+{% endblock %}
+```
+
+### app.py
+
+```python
+from flask import Flask, redirect, render_template, request, session
+from flask_session import Session
+
+# 配置应用
+app = Flask(__name__)
+
+# 配置 Session
+app.config["SESSION_PERMANENT"] = False  # 关闭浏览器后 session 失效
+app.config["SESSION_TYPE"] = "filesystem"  # 将 session 存储在文件系统中
+Session(app)
+
+
+@app.route("/")
+def index():
+    # 从 session 获取用户名
+    return render_template("index.html", name=session.get("name"))
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        # 将用户名存入 session
+        session["name"] = request.form.get("name")
+        return redirect("/")
+    return render_template("login.html")
+
+
+@app.route("/logout")
+def logout():
+    # 清除 session
+    session.clear()
+    return redirect("/")
+```
+
+### 代码详解
+
+| 代码 | 说明 |
+|------|------|
+| `from flask_session import Session` | 导入 Flask-Session 扩展 |
+| `app.config["SESSION_TYPE"] = "filesystem"` | 配置 session 存储方式 |
+| `Session(app)` | 初始化 session 扩展 |
+| `session["name"] = ...` | 存储数据到 session |
+| `session.get("name")` | 从 session 获取数据 |
+| `session.clear()` | 清除所有 session 数据 |
+
+Session 让你能够确保只有特定用户可以访问特定功能，没有人能冒充其他用户！
+
+更多关于 Flask Session 的用法，参考 [Flask-Session 文档](https://flask-session.readthedocs.io/)。
+
+---
+
+# 购物车项目（Shopping Cart）
+
+这是一个使用 Session 实现购物车功能的完整示例。
+
+## 项目结构
+
+```bash
+store/
+├── app.py
+├── requirements.txt
+├── store.db
+└── templates/
+    ├── books.html
+    ├── cart.html
+    └── layout.html
+```
+
+## requirements.txt
+
+```text
+cs50
+Flask
+Flask-Session
+```
+
+## app.py
+
+```python
+from cs50 import SQL
+from flask import Flask, redirect, render_template, request, session
+from flask_session import Session
+
+# 配置应用
+app = Flask(__name__)
+
+# 连接数据库
+db = SQL("sqlite:///store.db")
+
+# 配置 Session
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
+
+
+@app.route("/")
+def index():
+    # 查询所有书籍
+    books = db.execute("SELECT * FROM books")
+    return render_template("books.html", books=books)
+
+
+@app.route("/cart", methods=["GET", "POST"])
+def cart():
+    # 确保购物车存在
+    if "cart" not in session:
+        session["cart"] = []
+
+    # POST：添加商品到购物车
+    if request.method == "POST":
+        book_id = request.form.get("id")
+        if book_id:
+            session["cart"].append(book_id)
+        return redirect("/cart")
+
+    # GET：显示购物车内容
+    books = db.execute("SELECT * FROM books WHERE id IN (?)", session["cart"])
+    return render_template("cart.html", books=books)
+```
+
+## templates/layout.html
+
+```html
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+        <meta name="viewport" content="initial-scale=1, width=device-width">
+        <title>store</title>
+    </head>
+
+    <body>
+        {% block body %}{% endblock %}
+    </body>
+
+</html>
+```
+
+## templates/books.html
+
+```html
+{% extends "layout.html" %}
+
+{% block body %}
+
+    <h1>Books</h1>
+    {% for book in books %}
+        <h2>{{ book["title"] }}</h2>
+        <form action="/cart" method="post">
+            <input name="id" type="hidden" value="{{ book['id'] }}">
+            <button type="submit">Add to Cart</button>
+        </form>
+    {% endfor %}
+
+{% endblock %}
+```
+
+## templates/cart.html
+
+```html
+{% extends "layout.html" %}
+
+{% block body %}
+
+    <h1>Cart</h1>
+    <ol>
+        {% for book in books %}
+            <li>{{ book["title"] }}</li>
+        {% endfor %}
+    </ol>
+
+{% endblock %}
+```
+
+---
+
+# API 和 JSON
+
+## 什么是 API？
+
+**API（Application Programming Interface，应用程序接口）** 是一系列规范，让不同的软件系统能够相互通信。
+
+例如：
+- 使用 IMDB 的 API 获取电影信息
+- 使用天气 API 获取天气预报
+- 使用地图 API 在网站上显示地图
+
+## AJAX：异步请求
+
+**AJAX（Asynchronous JavaScript and XML）** 允许网页在**不刷新整个页面**的情况下与服务器交换数据。
+
+### 使用 AJAX 实现实时搜索
+
+```html
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+        <meta name="viewport" content="initial-scale=1, width=device-width">
+        <title>shows</title>
+    </head>
+
+    <body>
+
+        <input autocomplete="off" autofocus placeholder="Query" type="search">
+
+        <ul></ul>
+
+        <script>
+            let input = document.querySelector('input');
+            // 监听输入事件
+            input.addEventListener('input', async function() {
+                // 发送请求到服务器
+                let response = await fetch('/search?q=' + input.value);
+                // 获取响应文本
+                let shows = await response.text();
+                // 更新页面内容
+                document.querySelector('ul').innerHTML = shows;
+            });
+        </script>
+
+    </body>
+
+</html>
+```
+
+### AJAX 代码详解
+
+| 代码 | 说明 |
+|------|------|
+| `input.addEventListener('input', ...)` | 监听输入框的输入事件 |
+| `async function()` | 异步函数，可以使用 await |
+| `await fetch('/search?q=...')` | 发送 HTTP 请求并等待响应 |
+| `await response.text()` | 获取响应的文本内容 |
+| `document.querySelector('ul').innerHTML = shows` | 更新页面 |
+
+## JSON：数据交换格式
+
+**JSON（JavaScript Object Notation）** 是一种轻量级的数据交换格式。
+
+### JSON 示例
+
+```json
+[
+    {"id": 1, "title": "The Office"},
+    {"id": 2, "title": "Friends"},
+    {"id": 3, "title": "Breaking Bad"}
+]
+```
+
+### 返回 JSON 响应
+
+```python
+from flask import Flask, jsonify, request
+from cs50 import SQL
+
+app = Flask(__name__)
+db = SQL("sqlite:///shows.db")
+
+
+@app.route("/search")
+def search():
+    q = request.args.get("q")
+    if q:
+        shows = db.execute("SELECT * FROM shows WHERE title LIKE ? LIMIT 50", "%" + q + "%")
+    else:
+        shows = []
+    # 使用 jsonify 返回 JSON 格式的响应
+    return jsonify(shows)
+```
+
+### 在 JavaScript 中处理 JSON
+
+```html
+<script>
+    let input = document.querySelector('input');
+    input.addEventListener('input', async function() {
+        let response = await fetch('/search?q=' + input.value);
+        // 将响应解析为 JSON
+        let shows = await response.json();
+        let html = '';
+        for (let i in shows) {
+            // 防止 XSS 攻击
+            let title = shows[i].title.replace('<', '&lt;').replace('&', '&amp;');
+            html += '<li>' + title + '</li>';
+        }
+        document.querySelector('ul').innerHTML = html;
+    });
+</script>
+```
+
+更多关于 JSON 的使用，请阅读 [JSON 官方文档](https://www.json.org/json-en.html)。
+
+---
+
+# 总结
+
+在本节课中，我们学习了如何使用 Python、SQL 和 Flask 创建 Web 应用程序。
+
+## 核心知识点回顾
+
+| 主题 | 关键概念 |
+|------|---------|
+| **Flask 基础** | 路由、装饰器、模板渲染 |
+| **表单处理** | GET vs POST、表单验证 |
+| **模板** | Jinja2 语法、模板继承 |
+| **数据库** | 使用 SQL 持久化数据 |
+| **Session** | 用户认证、Cookie |
+| **API/JSON** | AJAX、数据交换 |
+
+## Flask 项目最佳实践
+
+1. ✅ **使用模板继承**减少重复代码
+2. ✅ **验证所有用户输入**（永远不要信任客户端！）
+3. ✅ **使用 POST 方法**提交敏感数据
+4. ✅ **使用 Session** 管理用户状态
+5. ✅ **使用数据库**持久化数据
+
+## 下一步
+
+恭喜你完成了 Week 9 的学习！你现在具备了使用 Python、Flask、HTML 和 SQL 开发 Web 应用程序的能力。
+
+**建议**：
+- 🎯 用这些技能完成 CS50 的**最终项目**
+- 📚 深入学习 [Flask 官方文档](https://flask.palletsprojects.com/)
+- 🔒 学习 Web 安全知识（SQL 注入、XSS 等）
+
+---
+
+**参考资料**：
+- [CS50 Week 9 官方笔记](https://cs50.harvard.edu/x/notes/9/)
+- [Flask 官方文档](https://flask.palletsprojects.com/)
+- [Jinja2 模板文档](https://jinja.palletsprojects.com/)
+- [JSON 官方网站](https://www.json.org/)
+
+下次见！ 🚀

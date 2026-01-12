@@ -1,0 +1,64 @@
+随着课程的深入，problem 的难度也在升级，如week 3，可以根据课程提供的代码框架完成指定函数功能的实现是一部分，如何训练自己能够设计出类似工程化的框架是程序员的基本功。  
+下面我们以 `Tideman`为例来说明如何训练自己从需求到代码框架的设计能力。  
+可以尝试遵循以下4个步骤的思维训练   
+# 第一步： 名词动词法（提取数据结构与函数）  
+拿到需求文档（如 Tideman 选举规则）后先不要想代码怎么写，而是在纸上圈出**名词**和**动词**。   
+## 1. 圈名词 -> 变成数据结构（Data Structure） 
+- 文档提到"候选人" -> 需要一个 string candidates[]  
+- 每两个候选人之间的胜负票数，有多少人认为候选人 i 比候选人 j 好 -> int preferences[i][j]  
+- 文档提到需要一个胜负关系对 -> struct pairs[winner, loser]  
+- 文档提到需要一个锁定胜负关系的图 -> bool locked[][]  
+Tips: 当在需求文档中看到“所有的...”，“每个....的属性”时，通常需要数组或者结构体，当看到"A 和 B 的关系"时通常需要矩阵或者图。  
+## 2. 圈动词 -> 变成函数（functions）  
+- 文档说选民需要投票 -> vote()  
+- 文档说需要“记录”选票 -> record_preferences()  
+- 文档说需要“添加胜负对” -> add_pairs()  
+- 文档说需要对这些胜负对排序  -> sort()  
+- 文档说需要锁定关系  -> lock_pairs()  
+所以，大部分函数就是文档需求中的动词转化的  
+# 第二步：定义数据流（Data Flow）  
+有了名词（数据结构）和动词（函数），下一步就是把它们串起来。  
+画草图，找出函数的输入和输出。这里  
+- `vote()`  
+Input: rank, name, and ranks  
+Output: boolen, true:有效投票，更新ranks,false:无效投票  
+- record_preferences()  
+Input: ranks，
+Output: 没有返回类型， update the global preferences  
+- add_pairs()  
+读 preferences。它生产什么？ -> 生产 pairs 数组。  
+- sort_pairs()  
+读取 pairs 数组对其排序  
+- lock_pairs()  
+读取pairs 数组中的winner 和 loser,在判断不会形成环的前提下，锁定winner-loser，即生产一个从winner 到 loser的有向边，更新到locked图。  
+- print_winner()  
+读取locked()图，找出winner，没有任何指向该candidate的边的点即winner。  
+Tips：尝试用**输入/输出 (Input/Process/Output)** 的模型来描述每个步骤。  
+如果设计时发现某个函数不知去哪里拿数据，那就说明某个数据定义的不够全，或者需要一个全局变量。  
+# 第三步，自顶向下的伪代码(Top-Down Design)  
+不要具体的C代码，先写伪代码，就像写文章大纲一样。  
+假设主程序是main  
+程序开始  
+  1. 拿到所有候选人的名字  
+  2. 循环问候选人：  
+    - 拿到他的投票vote  
+    - 把他的投票更新到大的表格上record_preferences  
+  3. 根据preferences大表格统计一对一输赢对清单 add_pairs  
+  4. 对输赢对清单pairs排序 sort  
+  5. 把清单画成图，但不能形成环， lock_pairs  
+  6. 根据图的边打印出winner(没有边指向的点)  
+这就是模块化思维。  
+# 第四步：从简单的原型开始迭代(Iterative Refinement)  
+如果是你自己设计，千万不要试图一次性设计出 Tideman 这种完成度的代码。那是上帝视角。  
+真实的设计过程通常是这样的：
+版本 1 (最蠢的版本)：
+我先只做一个能统计票数的程序。哪怕只能统计 preferences。
+发现问题：我想知道谁赢了谁，还得每次去查表，好麻烦。
+改进设计：不如我专门搞个 pairs 数组把胜负结果存下来吧？
+版本 2 (加功能)：
+我现在有了 pairs，我直接画图吧。
+发现问题：如果形成环了怎么办？谁都赢不了。
+改进设计：需求说要从强到弱锁。那我得先加个 sort 步骤。
+再次改进：锁的时候得检查环。那我得在 lock 步骤里加个递归检查。  
+CS50 给你的框架是最终版。但设计者在最初思考时，也是从简陋的版本一步步推导出需要 pairs 数组、需要 locked 矩阵的。  
+

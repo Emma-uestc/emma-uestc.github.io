@@ -33,7 +33,7 @@ permalink: /about/
 ### 🛠 技术栈
 
 **熟悉的技术：**
-- **编程语言**：Python, Shell, Go
+- **编程语言**：Python, Shell,(C++,Go 简单了解)
 - **运维工具**：Docker, Kubernetes, Ansible
 - **监控系统**：Prometheus, Grafana, ELK
 - **云平台**：阿里云, AWS
@@ -41,14 +41,14 @@ permalink: /about/
 **正在学习：**
 - **AI框架**：vLLM, TensorRT-LLM
 - **前端技术**：React, Vue.js
-- **数据库**：PostgreSQL, Redis
+- **数据库**：PostSQL Redis
 
 ### 🎨 兴趣爱好
 
 除了技术，我还喜欢：
 - 📚 **阅读**：技术书籍、科幻小说、人文社科
-- 🎵 **音乐**：古典音乐、民谣、电子音乐
-- 🏃‍♀️ **运动**：跑步、瑜伽、羽毛球
+- 🎵 **音乐**：古典音乐、民谣、电音、摇滚、R&B
+- 🏃‍♀️ **运动**：跑步、撸铁、网球
 - 📷 **摄影**：街拍、风景、日常记录
 - 🍳 **烹饪**：尝试各种菜系和新食谱
 
@@ -61,13 +61,12 @@ permalink: /about/
 
 **生活方面：**
 - 保持规律运动习惯
-- 每月读完2本书
 - 学会一门新的乐器
 
 ### 📬 联系我
 
 - **GitHub**: [@Emma-uestc](https://github.com/Emma-uestc)
-- **邮箱**: your.email@example.com
+- **邮箱**: hollyf0120@example.com
 - **微信**: 可以通过邮箱联系获取
 
 如果你对技术、职场、生活有什么想法，欢迎随时交流！

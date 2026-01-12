@@ -1,0 +1,185 @@
+<svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#333" />
+    </marker>
+    <style>
+      .title { font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; fill: #2c3e50; }
+      .condition { fill: #3498db; stroke: #2980b9; stroke-width: 2; }
+      .action { fill: #2ecc71; stroke: #27ae60; stroke-width: 2; }
+      .text { font-family: Arial, sans-serif; font-size: 13px; fill: white; text-anchor: middle; }
+      .label { font-family: Arial, sans-serif; font-size: 12px; fill: #333; }
+      .count { font-family: Arial, sans-serif; font-size: 11px; fill: #e74c3c; font-weight: bold; }
+    </style>
+  </defs>
+
+  <!-- 标题 -->
+  <text x="150" y="25" class="title">写法1: 三个 else if (冗余)</text>
+  <text x="500" y="25" class="title">写法2: else if + else (推荐✓)</text>
+  <text x="900" y="25" class="title">写法3: 三个独立 if (低效)</text>
+
+  <!-- 写法1：三个 else if -->
+  <g id="method1">
+    <!-- x < y -->
+    <polygon points="150,60 200,80 150,100 100,80" class="condition"/>
+    <text x="150" y="85" class="text">x &lt; y?</text>
+    <text x="210" y="85" class="label">Y</text>
+    <text x="85" y="105" class="label">N</text>
+    
+    <rect x="180" y="110" width="80" height="40" rx="5" class="action"/>
+    <text x="220" y="135" class="text">输出 &lt;</text>
+    <line x1="180" y1="80" x2="220" y2="110" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+    
+    <!-- x > y -->
+    <polygon points="150,170 200,190 150,210 100,190" class="condition"/>
+    <text x="150" y="195" class="text">x &gt; y?</text>
+    <text x="210" y="195" class="label">Y</text>
+    <text x="85" y="215" class="label">N</text>
+    <line x1="150" y1="100" x2="150" y2="170" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+    
+    <rect x="180" y="220" width="80" height="40" rx="5" class="action"/>
+    <text x="220" y="245" class="text">输出 &gt;</text>
+    <line x1="180" y1="190" x2="220" y2="220" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+    
+    <!-- x == y -->
+    <polygon points="150,280 200,300 150,320 100,300" class="condition"/>
+    <text x="150" y="305" class="text">x == y?</text>
+    <text x="210" y="305" class="label">Y</text>
+    <line x1="150" y1="210" x2="150" y2="280" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+    
+    <rect x="180" y="330" width="80" height="40" rx="5" class="action"/>
+    <text x="220" y="355" class="text">输出 =</text>
+    <line x1="180" y1="300" x2="220" y2="330" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+    
+    <text x="150" y="400" class="count">⚠️ 最多3次比较</text>
+    <text x="150" y="420" class="count">最后一个条件是冗余的</text>
+  </g>
+
+  <!-- 写法2：else if + else -->
+  <g id="method2">
+    <!-- x < y -->
+    <polygon points="500,60 550,80 500,100 450,80" class="condition"/>
+    <text x="500" y="85" class="text">x &lt; y?</text>
+    <text x="560" y="85" class="label">Y</text>
+    <text x="435" y="105" class="label">N</text>
+    
+    <rect x="530" y="110" width="80" height="40" rx="5" class="action"/>
+    <text x="570" y="135" class="text">输出 &lt;</text>
+    <line x1="530" y1="80" x2="570" y2="110" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+    
+    <!-- x > y -->
+    <polygon points="500,170 550,190 500,210 450,190" class="condition"/>
+    <text x="500" y="195" class="text">x &gt; y?</text>
+    <text x="560" y="195" class="label">Y</text>
+    <text x="435" y="215" class="label">N</text>
+    <line x1="500" y1="100" x2="500" y2="170" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+    
+    <rect x="530" y="220" width="80" height="40" rx="5" class="action"/>
+    <text x="570" y="245" class="text">输出 &gt;</text>
+    <line x1="530" y1="190" x2="570" y2="220" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+    
+    <!-- else -->
+    <rect x="460" y="280" width="80" height="40" rx="5" class="action"/>
+    <text x="500" y="305" class="text">输出 =</text>
+    <text x="420" y="305" class="label">else</text>
+    <line x1="500" y1="210" x2="500" y2="280" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+    
+    <text x="500" y="360" class="count" fill="#27ae60">✓ 最多2次比较</text>
+    <text x="500" y="380" class="count" fill="#27ae60">逻辑清晰，性能最优</text>
+  </g>
+
+  <!-- 写法3：三个独立 if -->
+  <g id="method3">
+    <!-- x < y -->
+    <polygon points="900,60 950,80 900,100 850,80" class="condition"/>
+    <text x="900" y="85" class="text">x &lt; y?</text>
+    <text x="960" y="85" class="label">Y</text>
+    <text x="830" y="85" class="label">N</text>
+    
+    <rect x="930" y="110" width="80" height="40" rx="5" class="action"/>
+    <text x="970" y="135" class="text">输出 &lt;</text>
+    <line x1="930" y1="80" x2="970" y2="110" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="850" y1="80" x2="800" y2="80" stroke="#333" stroke-width="2"/>
+    <line x1="800" y1="80" x2="800" y2="190" stroke="#333" stroke-width="2"/>
+    
+    <!-- x > y -->
+    <polygon points="900,170 950,190 900,210 850,190" class="condition"/>
+    <text x="900" y="195" class="text">x &gt; y?</text>
+    <text x="960" y="195" class="label">Y</text>
+    <text x="830" y="195" class="label">N</text>
+    <line x1="900" y1="100" x2="900" y2="170" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+    
+    <rect x="930" y="220" width="80" height="40" rx="5" class="action"/>
+    <text x="970" y="245" class="text">输出 &gt;</text>
+    <line x1="930" y1="190" x2="970" y2="220" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="800" y1="190" x2="850" y2="190" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="800" y1="190" x2="800" y2="300" stroke="#333" stroke-width="2"/>
+    
+    <!-- x == y -->
+    <polygon points="900,280 950,300 900,320 850,300" class="condition"/>
+    <text x="900" y="305" class="text">x == y?</text>
+    <text x="960" y="305" class="label">Y</text>
+    <line x1="900" y1="210" x2="900" y2="280" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+    
+    <rect x="930" y="330" width="80" height="40" rx="5" class="action"/>
+    <text x="970" y="355" class="text">输出 =</text>
+    <line x1="930" y1="300" x2="970" y2="330" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="800" y1="300" x2="850" y2="300" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+    
+    <text x="900" y="400" class="count">⚠️ 总是3次比较</text>
+    <text x="900" y="420" class="count">即使已找到答案仍继续检查</text>
+  </g>
+
+  <!-- 性能对比表格 -->
+  <rect x="50" y="480" width="1100" height="280" fill="#ecf0f1" stroke="#bdc3c7" stroke-width="2" rx="10"/>
+  <text x="600" y="510" class="title" text-anchor="middle">性能与逻辑对比</text>
+  
+  <!-- 表头 -->
+  <rect x="80" y="530" width="200" height="40" fill="#34495e"/>
+  <rect x="280" y="530" width="280" height="40" fill="#34495e"/>
+  <rect x="560" y="530" width="280" height="40" fill="#34495e"/>
+  <rect x="840" y="530" width="280" height="40" fill="#34495e"/>
+  
+  <text x="180" y="555" class="text">场景</text>
+  <text x="420" y="555" class="text">写法1 (else if + else if)</text>
+  <text x="700" y="555" class="text">写法2 (else if + else) ✓</text>
+  <text x="980" y="555" class="text">写法3 (三个 if)</text>
+  
+  <!-- 数据行 -->
+  <rect x="80" y="570" width="200" height="60" fill="white" stroke="#bdc3c7"/>
+  <rect x="280" y="570" width="280" height="60" fill="white" stroke="#bdc3c7"/>
+  <rect x="560" y="570" width="280" height="60" fill="white" stroke="#bdc3c7"/>
+  <rect x="840" y="570" width="280" height="60" fill="white" stroke="#bdc3c7"/>
+  
+  <text x="180" y="595" class="label" text-anchor="middle">x = 1, y = 2</text>
+  <text x="180" y="615" class="label" text-anchor="middle" font-weight="bold">(x &lt; y)</text>
+  <text x="420" y="605" class="label" text-anchor="middle">1次比较后输出</text>
+  <text x="700" y="605" class="label" text-anchor="middle" fill="#27ae60" font-weight="bold">1次比较后输出 ✓</text>
+  <text x="980" y="595" class="label" text-anchor="middle" fill="#e74c3c">3次比较</text>
+  <text x="980" y="615" class="label" text-anchor="middle" fill="#e74c3c">(浪费2次)</text>
+  
+  <rect x="80" y="630" width="200" height="60" fill="white" stroke="#bdc3c7"/>
+  <rect x="280" y="630" width="280" height="60" fill="white" stroke="#bdc3c7"/>
+  <rect x="560" y="630" width="280" height="60" fill="white" stroke="#bdc3c7"/>
+  <rect x="840" y="630" width="280" height="60" fill="white" stroke="#bdc3c7"/>
+  
+  <text x="180" y="655" class="label" text-anchor="middle">x = 2, y = 1</text>
+  <text x="180" y="675" class="label" text-anchor="middle" font-weight="bold">(x &gt; y)</text>
+  <text x="420" y="665" class="label" text-anchor="middle">2次比较后输出</text>
+  <text x="700" y="665" class="label" text-anchor="middle" fill="#27ae60" font-weight="bold">2次比较后输出 ✓</text>
+  <text x="980" y="655" class="label" text-anchor="middle" fill="#e74c3c">3次比较</text>
+  <text x="980" y="675" class="label" text-anchor="middle" fill="#e74c3c">(浪费1次)</text>
+  
+  <rect x="80" y="690" width="200" height="60" fill="white" stroke="#bdc3c7"/>
+  <rect x="280" y="690" width="280" height="60" fill="white" stroke="#bdc3c7"/>
+  <rect x="560" y="690" width="280" height="60" fill="white" stroke="#bdc3c7"/>
+  <rect x="840" y="690" width="280" height="60" fill="white" stroke="#bdc3c7"/>
+  
+  <text x="180" y="715" class="label" text-anchor="middle">x = 2, y = 2</text>
+  <text x="180" y="735" class="label" text-anchor="middle" font-weight="bold">(x == y)</text>
+  <text x="420" y="715" class="label" text-anchor="middle" fill="#e67e22">3次比较</text>
+  <text x="420" y="735" class="label" text-anchor="middle" fill="#e67e22">(最后一次是冗余)</text>
+  <text x="700" y="715" class="label" text-anchor="middle" fill="#27ae60" font-weight="bold">2次比较</text>
+  <text x="700" y="735" class="label" text-anchor="middle" fill="#27ae60">(直接进入 else) ✓</text>
+  <text x="980" y="725" class="label" text-anchor="middle" fill="#e74c3c">3次比较</text>
+</svg>
