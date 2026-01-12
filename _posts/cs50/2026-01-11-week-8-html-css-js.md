@@ -1,3 +1,11 @@
+---
+layout: post
+title: "CS50 Week 8: HTML, CSS, JavaScript"
+date: 2026-01-11 10:00:00 +0800
+categories: [learning]
+tags: [HTML, CSS, JavaScript, Web开发, 前端]
+---
+
 之前课程，我们学习了高级编程语言 Python，它与 C 语言类似，也是通过把功能放到特定模块中构建。今天，我们将进一步扩展这些构建模块，深入探索HTML、CSS和JavaScript。
 # 互联网    
 互联网将全球计算机相互连接，是一项我们都在使用的技术。

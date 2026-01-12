@@ -1,3 +1,11 @@
+---
+layout: post
+title: "CS50 Problem Set 1 角色扮演对话脚本"
+date: 2026-01-11 10:00:00 +0800
+categories: [learning]
+tags: [英语学习, 口语练习, 角色扮演, TTS]
+---
+
 # CS50 Problem Set 1 - Role Play Dialogue Script
 ## 教授与学生对话式讲解（优化用于 Text-to-Speech）
 

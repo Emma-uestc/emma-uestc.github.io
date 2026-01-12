@@ -1,3 +1,11 @@
+---
+layout: post
+title: "CS50 Problem Set 1 英语教学脚本"
+date: 2026-01-11 10:00:00 +0800
+categories: [learning]
+tags: [英语学习, 教学脚本, 口语练习]
+---
+
 # CS50 Problem Set 1 - Teaching Script
 ## English Lecture Notes for Speaking Practice
 

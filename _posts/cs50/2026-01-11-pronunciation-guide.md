@@ -1,3 +1,11 @@
+---
+layout: post
+title: "CS50 编程术语发音指南"
+date: 2026-01-11 10:00:00 +0800
+categories: [learning]
+tags: [英语学习, 发音, 编程术语, TTS]
+---
+
 # CS50 Programming Terms - Pronunciation Guide
 ## 完整发音指南（适用于 Text-to-Speech）
 

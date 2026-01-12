@@ -1,3 +1,11 @@
+---
+layout: post
+title: "Gemini TTS 英语练习指南"
+date: 2026-01-11 10:00:00 +0800
+categories: [learning]
+tags: [英语学习, TTS, Gemini, AI工具]
+---
+
 # Gemini Text-to-Speech 使用指南
 ## 如何使用 AI 语音工具练习英语
 
