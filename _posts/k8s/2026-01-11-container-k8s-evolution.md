@@ -1,3 +1,11 @@
+---
+layout: post
+title: "容器技术详解与Kubernetes的演进之路"
+date: 2026-01-11 10:00:00 +0800
+categories: [learning]
+tags: [Kubernetes, 容器, Docker, 云原生]
+---
+
 ## 容器技术详解与Kubernetes的演进之路
 
 ### 1. 从传统部署到容器化：技术演进的必然
