@@ -4,7 +4,6 @@ title: "CS50 Problem Set 9: Flask Web 应用开发实战"
 date: 2026-01-11 10:00:00 +0800
 categories: [learning]
 tags: [Python, Flask, SQL, Web开发, Session]
-render_with_liquid: false
 ---
 
 # Week 9 Problem Set 概述
@@ -127,12 +126,12 @@ else:  # GET 请求
 
 ```html
 <tbody>
-    {% for birthday in birthdays %}
+    { % for birthday in birthdays % }
         <tr>
-            <td>{{ birthday.name }}</td>
-            <td>{{ birthday.month }}/{{ birthday.day }}</td>
+            <td>{ { birthday.name } }</td>
+            <td>{ { birthday.month } }/{ { birthday.day } }</td>
         </tr>
-    {% endfor %}
+    { % endfor % }
 </tbody>
 ```
 
@@ -231,7 +230,7 @@ def index():
         </div>
         <div class="container">
             <div class="section">
-                <h2>{{ message }}</h2>
+                <h2>{ { message } }</h2>
                 <p><a href="/">Go back</a></p>
             </div>
         </div>
@@ -416,13 +415,13 @@ CREATE INDEX idx_user_symbol ON transactions(user_id, symbol);
 ### 前端：templates/register.html
 
 ```html
-{% extends "layout.html" %}
+{ % extends "layout.html" % }
 
-{% block title %}
+{ % block title % }
     Register
-{% endblock %}
+{ % endblock % }
 
-{% block main %}
+{ % block main % }
     <form action="/register" method="post">
         <div class="mb-3">
             <input autocomplete="off" autofocus class="form-control mx-auto w-auto" 
@@ -438,7 +437,7 @@ CREATE INDEX idx_user_symbol ON transactions(user_id, symbol);
         </div>
         <button class="btn btn-primary" type="submit">Register</button>
     </form>
-{% endblock %}
+{ % endblock % }
 ```
 
 ### 后端：app.py
@@ -507,13 +506,13 @@ SELECT id, username, cash FROM users;
 ### 前端：templates/quote.html
 
 ```html
-{% extends "layout.html" %}
+{ % extends "layout.html" % }
 
-{% block title %}
+{ % block title % }
     Quote
-{% endblock %}
+{ % endblock % }
 
-{% block main %}
+{ % block main % }
     <form action="/quote" method="post">
         <div class="mb-3">
             <input autocomplete="off" autofocus class="form-control mx-auto w-auto" 
@@ -521,26 +520,26 @@ SELECT id, username, cash FROM users;
         </div>
         <button class="btn btn-primary" type="submit">Quote</button>
     </form>
-{% endblock %}
+{ % endblock % }
 ```
 
 ### 前端：templates/quoted.html
 
 ```html
-{% extends "layout.html" %}
+{ % extends "layout.html" % }
 
-{% block title %}
+{ % block title % }
     Quoted
-{% endblock %}
+{ % endblock % }
 
-{% block main %}
+{ % block main % }
     <h2>Stock Quote</h2>
     <p>
-        A share of <strong>{{ stock.name }}</strong> ({{ stock.symbol }}) 
-        costs <strong>{{ stock.price | usd }}</strong>.
+        A share of <strong>{ { stock.name } }</strong> ({ { stock.symbol } }) 
+        costs <strong>{ { stock.price | usd } }</strong>.
     </p>
     <a href="/quote" class="btn btn-secondary">Quote Another</a>
-{% endblock %}
+{ % endblock % }
 ```
 
 ### 后端：app.py
@@ -606,13 +605,13 @@ def quote():
 ### 前端：templates/buy.html
 
 ```html
-{% extends "layout.html" %}
+{ % extends "layout.html" % }
 
-{% block title %}
+{ % block title % }
     Buy
-{% endblock %}
+{ % endblock % }
 
-{% block main %}
+{ % block main % }
     <form action="/buy" method="post">
         <div class="mb-3">
             <input autocomplete="off" autofocus class="form-control mx-auto w-auto" 
@@ -624,7 +623,7 @@ def quote():
         </div>
         <button class="btn btn-primary" type="submit">Buy</button>
     </form>
-{% endblock %}
+{ % endblock % }
 ```
 
 ### 后端：app.py
@@ -760,13 +759,13 @@ def index():
 ### 前端：templates/index.html
 
 ```html
-{% extends "layout.html" %}
+{ % extends "layout.html" % }
 
-{% block title %}
+{ % block title % }
     Portfolio
-{% endblock %}
+{ % endblock % }
 
-{% block main %}
+{ % block main % }
     <h2>Portfolio</h2>
     <table class="table table-striped">
         <thead>
@@ -779,28 +778,28 @@ def index():
             </tr>
         </thead>
         <tbody>
-            {% for stock in portfolio %}
+            { % for stock in portfolio % }
             <tr>
-                <td>{{ stock.symbol }}</td>
-                <td>{{ stock.name }}</td>
-                <td>{{ stock.total_shares }}</td>
-                <td>{{ stock.price | usd }}</td>
-                <td>{{ stock.total | usd }}</td>
+                <td>{ { stock.symbol } }</td>
+                <td>{ { stock.name } }</td>
+                <td>{ { stock.total_shares } }</td>
+                <td>{ { stock.price | usd } }</td>
+                <td>{ { stock.total | usd } }</td>
             </tr>
-            {% endfor %}
+            { % endfor % }
         </tbody>
         <tfoot>
             <tr>
                 <td colspan="4"><strong>Cash</strong></td>
-                <td>{{ cash | usd }}</td>
+                <td>{ { cash | usd } }</td>
             </tr>
             <tr>
                 <td colspan="4"><strong>TOTAL</strong></td>
-                <td><strong>{{ total_value | usd }}</strong></td>
+                <td><strong>{ { total_value | usd } }</strong></td>
             </tr>
         </tfoot>
     </table>
-{% endblock %}
+{ % endblock % }
 ```
 
 ### 效果展示
@@ -818,20 +817,20 @@ def index():
 使用下拉菜单显示用户持有的股票：
 
 ```html
-{% extends "layout.html" %}
+{ % extends "layout.html" % }
 
-{% block title %}
+{ % block title % }
     Sell
-{% endblock %}
+{ % endblock % }
 
-{% block main %}
+{ % block main % }
     <form action="/sell" method="post">
         <div class="mb-3">
             <select class="form-select mx-auto w-auto" name="symbol" required>
                 <option disabled selected value="">Symbol</option>
-                {% for stock in stocks %}
-                    <option value="{{ stock.symbol }}">{{ stock.symbol }}</option>
-                {% endfor %}
+                { % for stock in stocks % }
+                    <option value="{ { stock.symbol } }">{ { stock.symbol } }</option>
+                { % endfor % }
             </select>
         </div>
         <div class="mb-3">
@@ -840,7 +839,7 @@ def index():
         </div>
         <button class="btn btn-primary" type="submit">Sell</button>
     </form>
-{% endblock %}
+{ % endblock % }
 ```
 
 ### 后端：app.py
@@ -945,13 +944,13 @@ def history():
 ### 前端：templates/history.html
 
 ```html
-{% extends "layout.html" %}
+{ % extends "layout.html" % }
 
-{% block title %}
+{ % block title % }
     History
-{% endblock %}
+{ % endblock % }
 
-{% block main %}
+{ % block main % }
     <h2>Transaction History</h2>
     <table class="table table-striped">
         <thead>
@@ -963,23 +962,23 @@ def history():
             </tr>
         </thead>
         <tbody>
-            {% for transaction in transactions %}
+            { % for transaction in transactions % }
             <tr>
-                <td>{{ transaction.symbol }}</td>
+                <td>{ { transaction.symbol } }</td>
                 <td>
-                    {% if transaction.shares > 0 %}
-                        <span class="text-success">+{{ transaction.shares }}</span>
-                    {% else %}
-                        <span class="text-danger">{{ transaction.shares }}</span>
-                    {% endif %}
+                    { % if transaction.shares > 0 % }
+                        <span class="text-success">+{ { transaction.shares } }</span>
+                    { % else % }
+                        <span class="text-danger">{ { transaction.shares } }</span>
+                    { % endif % }
                 </td>
-                <td>{{ transaction.price | usd }}</td>
-                <td>{{ transaction.transacted_timestamp }}</td>
+                <td>{ { transaction.price | usd } }</td>
+                <td>{ { transaction.transacted_timestamp } }</td>
             </tr>
-            {% endfor %}
+            { % endfor % }
         </tbody>
     </table>
-{% endblock %}
+{ % endblock % }
 ```
 
 **显示效果**：
